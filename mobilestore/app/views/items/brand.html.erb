@@ -1,0 +1,38 @@
+<h1>Product Catalog by Brand</h1>
+<br/>
+<h2><%= @brand %></h2>
+<table class="brand">
+  <% @items.each do |item| %>
+      <tr>
+        <td>
+          <div class="image">
+            <%= link_to (image_tag item.image_url, :style => "height:200px"), item %>
+          </div>
+        </td>
+        <td>
+          <div class="title">
+            <%= link_to item.title, item %>
+          </div>
+          <div class="description">
+            <%= item.description %>
+          </div>
+          <div class="price">
+            <%= number_to_currency(Filteranddiscount.rundiscount(item.discount,item.price), :unit => "&euro;") %>
+          </div>
+          <% if current_user and current_user.admin == 'manager' %>
+              <div class="links">
+                <%= link_to 'Edit', edit_item_path(item) %> |
+                <%= link_to 'Destroy', item, :confirm => 'Are you sure?', :method => :delete %>
+          <% else %>
+              <% if current_user and current_user.admin == 'customer' %>
+                  <button id="add_to_cart"><a href="/cart/<%= item.id %>">Add to Cart</a></button><br><br>
+              <% end %>
+          <% end %>
+          </div>
+        </td>
+      </tr>
+  <% end %>
+</table>
+<% if current_user and current_user.admin == 'manager' %>
+    <p><%= link_to 'New item', new_item_path %></p>
+<% end %>

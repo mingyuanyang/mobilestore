@@ -1,0 +1,68 @@
+<p id="notice">
+  <% notice %></p>
+<div id="post_show">
+  <br/>
+
+  <h1>
+    <center><b><%= Filteranddiscount.runfilter(@post.title) %></b></center>
+  </h1>
+  <br/> <br/><br/>
+
+  <div align="right" style="margin-right:50px;">
+    <b>Author:</b>
+    <% if @post.user.profiles.first != nil %>
+        <%= @post.user.profiles.first.firstname %>
+    <% else %>
+        <%= @post.user.email %>
+    <% end %>
+  </div>
+  </br>
+  </br>
+  <div>
+    <%= Filteranddiscount.runfilter(@post.text) %>
+  </div>
+  <br/><br/>
+
+  <div>********************************************************************************</div>
+  <h2><u>Comments:</u></h2>
+  <% @post.commentps.each do |commentp| %>
+
+      <p>
+        <%= Filteranddiscount.runfilter(commentp.body) %>
+      </p>
+      <% if current_user and current_user.admin == 'manager' %>
+          <p align="right">
+            <%= link_to 'Destroy Comment', [commentp.post, commentp],
+                        method: :delete,
+                        data: {confirm: 'Are you sure?'} %>
+          </p>
+      <% end %>
+      <div>................................................................................</div>
+  <% end %>
+  <br/>
+
+  <div align="center">
+    <h2>Leave your comment:</h2>
+    <%= form_for([@post, @post.commentps.build]) do |f| %>
+
+        <p>
+          <% f.label :body %><br/>
+          <%= f.text_area :body %>
+        </p>
+
+        <p>
+          <%= f.submit 'submit' %>
+        </p>
+    <% end %>
+  </div>
+
+
+
+  <% if (current_user and current_user.admin == 'customer') or (current_user and current_user.admin == 'worker') %>
+      <%= link_to 'View Posts', posts_path %> |
+      <%= link_to 'View Yoursite', profiles_path %>
+
+  <% else %>
+      |<%= link_to 'View Posts', posts_path %>|
+  <% end %>
+</div>

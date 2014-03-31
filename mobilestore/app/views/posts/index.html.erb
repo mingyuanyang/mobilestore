@@ -1,0 +1,32 @@
+<div id="post_index">
+  <div align="center">..................</div>
+  <h1 align="center">Posts</h1>
+
+
+  <div align="center">..................</div>
+  <br/>
+  <% @posts.each do |post| %>
+      <br/>
+      <div id="post_index_title"><%= Filteranddiscount.runfilter(post.title) %></div>
+      <br/>
+
+      <div id="post_index_text"><%= truncate(strip_tags(Filteranddiscount.runfilter(post.text)),
+                                             length: 280) %></div>
+      <br/>
+
+      <div id="post_index_link"><%= link_to 'Continue reading', post %>
+        <% if current_user and current_user.admin == 'manager' %>
+            <%= link_to 'Edit', edit_post_path(post) %>
+            <%= link_to 'Destroy', post, method: :delete, data: {confirm: 'Are you sure?'} %>
+        <% end %>   </div>
+      <br/>
+
+      <div align="center">**************************************************************************</div>
+  <% end %>
+
+
+  <br/>
+  <div id="post_index_link2">
+  <%= link_to 'New Post', new_post_path %>
+    </div>
+</div>

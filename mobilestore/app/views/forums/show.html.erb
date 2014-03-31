@@ -1,0 +1,71 @@
+<p id="notice">
+  <% notice %></p>
+
+<div id="forum_show">
+  <fieldset>
+    <div>
+      <h1><%= Filteranddiscount.runfilter(@forum.title) %></h1>
+
+      <p>
+        <b>Started by:</b>
+        <% if @forum.user.profiles.first != nil %>
+            <%= @forum.user.profiles.first.firstname %>
+        <% else %>
+            <%= @forum.user.email %>
+        <% end %>
+      </p>
+    </div>
+    <hr/>
+    <p>
+      <%= Filteranddiscount.runfilter(@forum.text) %>
+    </p>
+  </fieldset>
+  <br/>
+
+  <% @forum.commentfs.each do |commentf| %>
+      <fieldset id="comment">
+        <b>Re:</b><%= Filteranddiscount.runfilter(@forum.title) %>  <br/>
+        <b> By: </b>
+        <% if commentf.user.profiles.first != nil %>
+            <%= commentf.user.profiles.first.firstname %>
+        <% else %>
+            <%= commentf.user.email %>
+        <% end %>
+
+        <hr/>
+        <p>
+          <%= Filteranddiscount.runfilter(commentf.body) %>
+        </p>
+
+
+        <% if current_user and current_user.admin == 'manager' %>
+            <p>
+              <%= link_to 'Destroy Comment', [commentf.forum, commentf],
+                          method: :delete,
+                          data: {confirm: 'Are you sure?'} %>
+            </p>
+        <% end %>  </fieldset>
+      <br/>
+  <% end %>
+  <div id="reply">
+    <h2>Reply here</h2>
+    <%= form_for([@forum, @forum.commentfs.build]) do |f| %>
+
+        <p>
+
+          <%= f.text_area :body, :rows => 8 %>
+        </p>
+
+        <p>
+          <%= f.submit 'submit' %>
+        </p>
+    <% end %>
+  </div>
+  <% if (current_user and current_user.admin == 'customer') or (current_user and current_user.admin == 'worker') %>
+      <%= link_to 'View Forum', forums_path %> |
+      <%= link_to 'View Yoursite', profiles_path %>
+
+  <% else %>
+      |<%= link_to 'Back', forums_path %>|
+  <% end %>
+</div>

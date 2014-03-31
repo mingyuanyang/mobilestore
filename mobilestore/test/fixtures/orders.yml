@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  receiver_name: MyString
+  receiver_address: MyText
+  receiver_mobile: MyString
+  order_date: 2013-11-05 01:09:54
+  user: 
+
+two:
+  receiver_name: MyString
+  receiver_address: MyText
+  receiver_mobile: MyString
+  order_date: 2013-11-05 01:09:54
+  user: 

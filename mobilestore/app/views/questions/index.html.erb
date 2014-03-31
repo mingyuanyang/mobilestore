@@ -1,0 +1,32 @@
+<div id="show_edit_area"></div>
+<div id="textmessage"></div>
+<div id="question_index">
+<center><h1>Customer questions</h1></center>  <br/><br/><br/>
+
+<table width="100%">
+  <tr>
+    <th>Name</th>
+    <th>Mobile</th>
+    <th>Your question</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @questions.each do |question| %>
+  <tr>
+    <td><%= question.name %></td>
+    <td><%= question.mobile %></td>
+    <td><%= question.your_question %></td>
+    <td><%= link_to 'Show', question, :class => 'show_question' %></td>
+    <td><%= link_to 'Edit', edit_question_path(question), :class => 'edit_question' %></td>
+    <td><%= link_to 'Destroy', question, method: :delete, data: { confirm: 'Are you sure?' }, :remote => true, :class => 'delete_question'  %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<% link_to 'New Question', new_question_path %>
+</div>
+<script type="text/javascript" src="/assets/questionindex.js"></script>

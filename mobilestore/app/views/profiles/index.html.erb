@@ -1,0 +1,144 @@
+<div id="profile_index">
+  <% if not @profiles.blank? %>
+      <h1>Your profile</h1>
+      <br/>
+
+      <table width="100%">
+        <tr>
+          <th>Firstname</th>
+          <th>Lastname</th>
+          <th>Address</th>
+          <th>Mobile</th>
+          <th></th>
+          <th></th>
+          <th></th>
+        </tr>
+
+        <% @profiles.each do |profile| %>
+            <tr>
+              <td><%= profile.firstname %></td>
+              <td><%= profile.lastname %></td>
+              <td><%= profile.address %></td>
+              <td><%= profile.mobile %></td>
+              <td><%= link_to 'Show', profile %></td>
+              <td><%= link_to 'Edit', edit_profile_path(profile) %></td>
+              <td><%= link_to 'Destroy', profile, method: :delete, data: {confirm: 'Are you sure?'} %></td>
+            </tr>
+        <% end %>
+      </table>
+
+      <br/>
+  <% else %>
+      <center>
+        <%= link_to 'Create Your Profile', new_profile_path %>
+      </center>
+      <br/>
+  <% end %>
+  <br/>
+  <hr/>
+  <br/>
+  <% if not @posts.blank? %>
+      <h1>Your posts</h1>
+      <br/>
+      <table width="100%">
+        <tr>
+          <th>Title</th>
+          <th>Text</th>
+          <th></th>
+          <th></th>
+          <th></th>
+        </tr>
+
+        <% @posts.each do |post| %>
+            <tr>
+              <td><%= post.title %></td>
+              <td><%= truncate(strip_tags(post.text),
+                               length: 16)  %></td>
+              <td><%= link_to 'Show', post %></td>
+              <td><%= link_to 'Edit', edit_post_path(post) %></td>
+              <td><%= link_to 'Destroy', post, method: :delete, data: {confirm: 'Are you sure?'} %></td>
+            </tr>
+        <% end %>
+      </table>
+      <br/>
+  <% else %>
+      <p align="center">You haven't post anything yet!</p>
+  <% end %>
+  <br>
+  <hr/>
+  <br/>
+  <% if not @forums.blank? %>
+      <h1>Your topics in the forum</h1>
+      <br/>
+      <table width="100%">
+        <tr>
+          <th>Discussion</th>
+          <th>Start by</th>
+          <th>Replies</th>
+          <th>Last post</th>
+          <th></th>
+          <th></th>
+        </tr>
+
+        <% @forums.each do |forum| %>
+            <tr>
+              <td><%= link_to truncate(strip_tags(forum.title),
+                                       length: 30), forum %></td>
+              <td>
+                <% if forum.user.profiles.first != nil %>
+                    <%= forum.user.profiles.first.firstname %>
+                <% else %>
+                    <%= forum.user.email %>
+                <% end %></td>
+              <td><%= forum.commentfs.length %></td>
+              <td>
+                <% if forum.commentfs.length != 0 %>
+                    <% if forum.commentfs.last.user.profiles.first != nil %>
+                        <%= forum.commentfs.last.user.profiles.first.firstname %>
+                    <% else %>
+                        <%= forum.commentfs.last.user.email %>
+                    <% end %>
+                <% else %>
+                    No replies!
+                <% end %></td>
+              <td><%= link_to 'Edit', edit_forum_path(forum) %></td>
+              <td><%= link_to 'Destroy', forum, method: :delete, data: {confirm: 'Are you sure?'} %></td>
+            </tr>
+        <% end %>
+      </table>
+
+      <br/>
+  <% else %>
+      <p align="center">You haven't upload any topic yet.</p>
+  <% end %>
+  <br/>
+  <hr/>
+  <br/>
+  <% if not @orders.blank? %>
+      <h1>Your Shopping History</h1>
+      <br/>
+      <table width="100%">
+        <tr>
+          <th>Receiver name</th>
+          <th>Receiver address</th>
+          <th>Receiver mobile</th>
+          <th>Order date</th>
+          <th></th>
+        </tr>
+
+        <% @orders.each do |order| %>
+            <tr>
+              <td><%= order.receiver_name %></td>
+              <td><%= order.receiver_address %></td>
+              <td><%= order.receiver_mobile %></td>
+              <td><%= order.order_date %></td>
+              <td><%= link_to 'Show', order %></td>
+            </tr>
+        <% end %>
+      </table>
+  <% else %>
+      <% if current_user and current_user.admin == 'customer' %>
+          <p align="center">You have no shopping history yet.</p>
+      <% end %>
+  <% end %>
+</div>

@@ -1,0 +1,67 @@
+<p id="notice">
+  <% notice %></p>
+<fieldset>
+  <h2>Receiver Details</h2>
+
+  <p>
+    <b>Receiver name:</b>
+    <%= @order.receiver_name %>
+  </p>
+
+  <p>
+    <b>Receiver address:</b>
+    <%= @order.receiver_address %>
+  </p>
+
+  <p>
+    <b>Receiver mobile:</b>
+    <%= @order.receiver_mobile %>
+  </p>
+
+  <p>
+    <b>Order date:</b>
+    <%= @order.order_date %>
+  </p>
+
+</fieldset>
+<br/>   <br/>
+<fieldset>
+  <% total = 0 %>
+  <h3>Items belong to this order</h3>
+  <hr/>
+  <% @order.orderitems.each do |orderitem| %>
+
+
+      <p>
+        <strong>Title:</strong>
+        <%= orderitem.title %>
+      </p>
+
+      <p>
+        <strong>Description:</strong>
+        <%= orderitem.description %>
+      </p>
+
+      <p>
+        <strong>Quantity:</strong>
+        <%= orderitem.quantity %>
+      </p>
+
+      <p>
+        <strong>Price:</strong>
+        <%= number_to_currency(orderitem.price * orderitem.quantity, :unit => "&euro;") %>
+      </p>
+      <% total += orderitem.quantity * orderitem.price %>
+      <hr/>
+
+
+  <% end %>
+
+  <p>Total Price: <%= number_to_currency(total, :unit => "&euro;") %></p>
+  <% link_to 'Edit', edit_order_path(@order) %>
+  <% if current_user and current_user.admin == 'customer' %>
+      <%= link_to 'Back', profiles_path %>
+  <% else %>
+      <%= link_to 'Back', orders_path %>
+  <% end %>
+</fieldset>

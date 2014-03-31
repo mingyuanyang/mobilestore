@@ -1,0 +1,34 @@
+<p id="notice"><% notice %></p>
+<h1>Showing a question</h1>
+<br/>
+<p>
+  <b>Name:</b>
+  <%= @question.name %>
+</p>
+
+<p>
+  <b>Mobile:</b>
+  <%= @question.mobile %>
+</p>
+
+<p>
+  <b>Your question:</b>
+  <%= @question.your_question %>
+</p>
+
+
+<%= link_to 'Edit', edit_question_path(@question), :class => 'edit_question' %> |
+<%= link_to 'Back', myindex_url, :class => 'myindex' %>
+<script type="text/javascript">
+    var show_myindex = function (e) {
+        e.preventDefault();
+        $("#textmessage").empty();
+        $("#show_edit_area").empty();
+        var url = $(this).attr("href");
+        $.get(url, function (data) {
+            $("#question_index").hide().html(data).fadeIn('slow');
+        });
+    }
+    $(".edit_question").on("click", edit_a_question);
+    $(".myindex").on("click", show_myindex);
+</script>

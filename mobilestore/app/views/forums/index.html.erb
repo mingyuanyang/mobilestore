@@ -1,0 +1,50 @@
+<div id='forum_index'>
+
+  <h1>Star Mobile forum</h1>
+  <br/>
+  <center>
+    <button><%= link_to 'Add a new topic', new_forum_path %></button>
+  </center>
+  <br/> <br/><br/>
+  <table>
+    <tr>
+      <th>Discussion</th>
+      <th>Start by</th>
+      <th>Replies</th>
+      <th>Last post</th>
+      <th></th>
+      <th></th>
+    </tr>
+    <% @forums.each do |forum| %>
+        <tr>
+          <td><%= link_to truncate(strip_tags(Filteranddiscount.runfilter(forum.title)),
+                                   length: 30), forum %></td>
+          <td>
+            <% if forum.user.profiles.first != nil %>
+                <%= forum.user.profiles.first.firstname %>
+            <% else %>
+                <%= forum.user.email %>
+            <% end %></td>
+          <td><%= forum.commentfs.length %></td>
+          <td>
+            <% if forum.commentfs.length != 0 %>
+            <% if forum.commentfs.last.user.profiles.first != nil %>
+                <%= forum.commentfs.last.user.profiles.first.firstname %>
+            <% else %>
+                <%= forum.commentfs.last.user.email %>
+            <% end %>
+            <% else %>
+                No replies!
+            <% end %></td>
+          <% if current_user and current_user.admin == 'manager' %>
+              <td><%= link_to 'Edit', edit_forum_path(forum) %></td>
+              <td><%= link_to 'Destroy', forum, method: :delete, data: {confirm: 'Are you sure?'} %></td>
+          <% end %>
+        </tr>
+    <% end %>
+  </table>
+
+  <br/>
+
+
+</div>

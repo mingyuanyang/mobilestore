@@ -1,0 +1,13 @@
+<div id="forum_edit">
+<h1>Editing forum</h1>
+         <br/>
+<%= render 'form' %>
+
+<%= link_to 'Show', @forum %> |
+<% if (current_user and current_user.admin == 'customer') or (current_user and current_user.admin == 'worker') %>
+    <%= link_to 'Back to Yoursite', profiles_path %>
+
+<% else %>
+    <%= link_to 'Back', forums_path %>
+<% end %>
+    </div>

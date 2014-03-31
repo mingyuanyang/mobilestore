@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <%= stylesheet_link_tag "application", :media => "all" %>
+  <%= javascript_include_tag "application" %>
+  <%= csrf_meta_tags %>
+  <title>Star Mobile Store</title>
+</head>
+<body>
+<div id='header'>
+  <!-- Header Image Displayes here -->
+</div>
+<div id='menu'>
+  <div id="navbar">
+    <ul>
+      <li><a href="/index">Home</a></li>
+      <li><a href="/items">Mobile Store</a></li>
+      <% if current_user and current_user.admin == 'customer' %>
+          <li><a href="/cart">Your Cart</a></li>
+
+      <% else %>
+          <% if (current_user and current_user.admin == 'worker') or (current_user and current_user.admin == 'manager') %>
+              <li><a href="/orders">Orders</a></li>
+          <% end %>
+      <% end %>
+      <li><a href="/posts">Posts</a></li>
+      <li><a href="/forums">Forum</a></li>
+      <span id="loginlink">
+      <% if user_signed_in? %>
+          <li><a>Hello, <%= current_user.admin %></a></li>
+          <li><a href="/profiles">Your Site</a></li>
+          <li><%= link_to 'Sign out', destroy_user_session_path, :method => :delete %></li>
+      <% else %>
+          <li><%= link_to 'Register', new_user_registration_path %></li>
+          <li><%= link_to 'Sign in', new_user_session_path %></li>
+      <% end %>
+          </span>
+    </ul>
+  </div>
+</div>
+
+<div id='container'>
+  <div id='content'>
+    <p id="notice"><%= flash[:notice] %></p>
+
+    <p id="alert"><%= flash[:alert] %></p>
+    <%= yield %>
+  </div>
+
+  <div id='first-column'>
+    <div class="searchbox">
+      <h2 class="BoxHeaders">Find your phone here...</h2>
+
+      <div id="search"><%= form_tag items_path, :method => 'get' do %>
+            <p>
+              <%= text_field_tag :search_query,
+                                 params[:search_query] %>
+              <%= submit_tag "Search", :name => nil %>
+            </p>
+        <% end %></div>
+    </div>
+    <div class="categorybox">
+      <h2 class="BoxHeaders">Are you looking for...</h2>
+      <ul><%= render '/items/categoryDistinctList' %></ul>
+    </div>
+    <div class="brandbox">
+      <h2 class="BoxHeaders">Would you like...</h2>
+      <ul><%= render '/items/brandDistinctList' %></ul>
+    </div>
+
+    <div class="sitebox">
+      <h2 class="BoxHeaders">Our website...</h2>
+      <ul>
+        <li><a href="/about">About Us</a></li>
+        <li><a href="/frequent_ask_questions">Frequent Ask Questions</a></li>
+        <li><a href="/site_map">Our Location</a></li>
+        <li><a href="/game">Entertainment</a></li>
+        <% if current_user and current_user.admin != 'customer' %>
+            <li><a href="/questions">Customer Questions</a></li>
+        <% else %>
+            <li><a href="/contact">Contact Us</a></li>
+        <% end %>
+      </ul>
+    </div>
+
+
+  </div>
+</div>
+<div id='footer'><h6 class="footertext">&copy; Star Mobile Store &trade; 2013</h6></div>
+</body>
+</html>

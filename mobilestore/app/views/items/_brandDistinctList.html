@@ -1,0 +1,7 @@
+<% @items = Item.select('DISTINCT brand') %>
+<div class="brandListAll">
+    <% @items.each do | c | %>
+    <a href="/brand/<%= c.brand %>" id="brandlisting"><%= c.brand %></a>
+    <br />
+    <% end %>
+</div>

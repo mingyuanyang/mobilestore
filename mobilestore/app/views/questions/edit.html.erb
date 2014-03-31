@@ -1,0 +1,21 @@
+
+<h1>Editing a question</h1>
+  <br/>    <br/>
+<%= render 'form' %>
+
+<%= link_to 'Show', @question, :class => 'show_question' %> |
+<%= link_to 'Back', myindex_url, :class => 'myindex' %>
+
+<script type="text/javascript">
+    var show_myindex = function (e) {
+        e.preventDefault();
+        $("#textmessage").empty();
+        $("#show_edit_area").empty();
+        var url = $(this).attr("href");
+        $.get(url, function (data) {
+            $("#question_index").hide().html(data).fadeIn('slow');
+        });
+    }
+    $(".show_question").on("click", show_a_question);
+    $(".myindex").on("click", show_myindex);
+</script>

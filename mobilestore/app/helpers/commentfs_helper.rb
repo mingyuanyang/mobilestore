@@ -1,0 +1,2 @@
+module CommentfsHelper
+end
